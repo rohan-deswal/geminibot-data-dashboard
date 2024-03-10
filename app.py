@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-from matplotlib import pyplot as plt
 import google.generativeai as genai
 
 broker_df = pd.read_excel('./data/2024 Dashboard Data.xlsx',sheet_name='Broker stats')
