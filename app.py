@@ -12,7 +12,7 @@ model = genai.GenerativeModel('gemini-pro')
 
 def respond(msg):
     return model.generate_content(msg + 'table1' + broker_df.to_csv(index=False) + 'table2' + class_df.to_csv(index=False)).text
-
+st. set_page_config(layout="wide")
 st.sidebar.title("Gemini Powered NLP Bot")
 st.sidebar.markdown('''Disclaimer: If you don't get the expected answer try sending query again''' )
 st.markdown(
@@ -45,7 +45,6 @@ if st.sidebar.button("Send"):
     """,
     unsafe_allow_html=True
 )
-
 market_types = list(broker_df['Market Type'].unique())+['Combined']
 years = list(broker_df['Year'].unique())+['All']
 
