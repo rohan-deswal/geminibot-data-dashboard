@@ -18,10 +18,9 @@ st.sidebar.markdown('''Disclaimer: If you don't get the expected answer try send
 st.markdown(
     """
     <style>
-        /* Adjust the width and white-space properties as needed */
         .sidebar .stMarkdown {
-            width: 200px; /* Set the width of the sidebar */
-            white-space: normal; /* Wrap text */
+            width: 200px;
+            white-space: normal;
         }
     </style>
     """,
@@ -36,10 +35,9 @@ if st.sidebar.button("Send"):
     st.markdown(
     """
     <style>
-        /* Adjust the width and white-space properties as needed */
         .sidebar .stMarkdown {
-            width: 200px; /* Set the width of the sidebar */
-            white-space: normal; /* Wrap text */
+            width: 200px;
+            white-space: normal;
         }
     </style>
     """,
@@ -88,20 +86,17 @@ class_types = list(class_df['ClassType'].unique())
 
 class_menu_col, class_graph_col = st.columns([1,3])
 def class_filter(df, class_of_business_filter, class_type_filter):
-    # Apply filters
     filtered_df = df.copy()
     if class_of_business_filter != "All":
         filtered_df = filtered_df[filtered_df["Class of Business"] == class_of_business_filter]
 
     if class_type_filter != "All":
-        # Split combined types if needed and filter
         if "," in class_type_filter:
             class_types = class_type_filter.split(",")
             filtered_df = filtered_df[filtered_df["ClassType"].isin(class_types)]
         else:
             filtered_df = filtered_df[filtered_df["ClassType"] == class_type_filter]
 
-    # Group by year and calculate sums
     filtered_df['Year'] = filtered_df['Year'].astype(str)
     grouped_df = filtered_df.groupby(['Year', 'Class of Business', 'ClassType']).agg({'Earned Premium': 'sum', 'GWP': 'sum', 'Business Plan': 'sum'}).reset_index()
 
@@ -119,15 +114,11 @@ def draw_bar_chart(df):
         # break
     except:
         pass
-    # Iterate over each year
     for year in years:
 
-        # Filter data for the current year
         year_data = df[df['Year'] == year]
 
-        # Create a dictionary to store data for each set of Class of Business and ClassType
         data_dict = {}
-        # Iterate over each row in the DataFrame
         for index, row in year_data.iterrows():
             key = f"{row['Class of Business']} - {row['ClassType']}"
             if key not in data_dict:
@@ -140,17 +131,13 @@ def draw_bar_chart(df):
             data_dict[key]['Earned Premium'] += row['Earned Premium']
             data_dict[key]['Business Plan'] += row['Business Plan']
 
-        # Convert the dictionary to DataFrame
         chart_data = pd.DataFrame(data_dict).T
 
-        # Display bar chart for the current year
-        # print(index)
         try:
             chart_cols[index].subheader(year)
             chart_cols[index].bar_chart(chart_data)
         except:
             st.write('No such data')
-        # st.bar_chart(chart_data)
 
 with class_graph_col:
     class_filtered = class_filter(class_df, business_class, class_type)
